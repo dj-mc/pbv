@@ -114,7 +114,9 @@ Configure memory usage:
 
 ```bash
 sudo su -
+
 vim /etc/sysconfig/puppetserver
+
 # Change:
 # JAVA_ARGS="-Xms2g -Xmx2g
 # to:
@@ -168,4 +170,34 @@ Test `puppet agent`:
 
 ```bash
 puppet agent -t
+```
+
+---
+
+Add a control repository:
+
+```bash
+mkdir /etc/puppetlabs/r10k
+vim /etc/puppetlabs/r10k/r10k.yaml
+```
+
+```yaml
+---
+# Look for modules w/ r10k
+:cachedir: '/var/cache/r10k'
+
+:sources:
+        :dj-mc:
+                # Source control
+                remote: 'https://github.com/dj-mc/puppet-control.git'
+                # r10k will look here for code and modules
+                basedir: '/etc/puppetlabs/code/environments'
+```
+
+```bash
+# Deploy the env
+r10k deploy environment -m
+
+# Repository location
+cd /etc/puppetlabs/code/environments/
 ```
