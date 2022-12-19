@@ -2,6 +2,8 @@
 
 **P**uppet, **B**olt, and **V**agrant
 
+(Bolt is not in action yet)
+
 ---
 
 ## Puppet
@@ -76,9 +78,15 @@ Assuming your real machine is running Ubuntu:
 
 Let's setup the project structure:
 
-Let's also decide to use CentOS on the VM (instead of Ubuntu).
+Let's also decide to use `generic/rocky8` on the VM (CentOS 8 is EOL).
+Rocky Linux uses `rpm` instead of `apt`, if you're from Debian.
+
+Initial artifact generation.  
+To devs using this repo: no need to regenerate, skip it.
 
 ```bash
 bolt project init pbv
-vagrant init centos/8
+vagrant init generic/rocky8
 ```
+
+Start the VM `vagrant up`, and puppetserver will be installed on it.
