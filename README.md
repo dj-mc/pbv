@@ -89,16 +89,83 @@ bolt project init pbv
 vagrant init generic/rocky8
 ```
 
-Start the VM `vagrant up`, and puppetserver will be installed on it.
+Start the VM `vagrant up`.
+
+---
+
+## Additional (puppetserver) Configuration
+
+Install `puppetserver`:
 
 ```bash
+sudo su -
+
+yum update -y
+rpm -Uvh https://yum.puppet.com/puppet-release-el-8.noarch.rpm
+yum install -y puppetserver git
+
+# Check version
 puppetserver --version
+```
+
+---
+
+Configure memory usage:
+
+```bash
 sudo su -
 vim /etc/sysconfig/puppetserver
 # Change:
 # JAVA_ARGS="-Xms2g -Xmx2g
 # to:
 # JAVA_ARGS="-Xms512m -Xmx512m
+
 systemctl start puppetserver
-systemctl status puppetserver.service
+systemctl status puppetserver
+# Active: active (running)
+systemctl enable puppetserver
+```
+
+---
+
+Append `vm.hostname` as `agent`:
+
+```bash
+vim /etc/puppetlabs/puppet/puppet.conf
+```
+
+```conf
+[agent]
+server = master.puppet.vm
+```
+
+---
+
+Append path to puppet binary:
+
+```bash
+cd ~
+vim .bash_profile
+```
+
+```bash
+PATH=$PATH:$HOME/bin
+PATH=$PATH:/opt/puppetlabs/puppet/bin
+```
+
+---
+
+Install `r10k`, a code management tool:  
+https://puppet.com/docs/pe/2019.8/r10k.html
+
+```bash
+gem install r10k
+```
+
+---
+
+Test `puppet agent`:
+
+```bash
+puppet agent -t
 ```
