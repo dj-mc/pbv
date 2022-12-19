@@ -90,3 +90,15 @@ vagrant init generic/rocky8
 ```
 
 Start the VM `vagrant up`, and puppetserver will be installed on it.
+
+```bash
+puppetserver --version
+sudo su -
+vim /etc/sysconfig/puppetserver
+# Change:
+# JAVA_ARGS="-Xms2g -Xmx2g
+# to:
+# JAVA_ARGS="-Xms512m -Xmx512m
+systemctl start puppetserver
+systemctl status puppetserver.service
+```
